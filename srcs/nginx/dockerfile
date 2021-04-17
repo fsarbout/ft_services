@@ -1,0 +1,3 @@
+FROM alpine:3.12
+
+RUN apk update && apk add nginx && apk -U add vim && apk add openrc --no-cache && apk add openssl && apk add openssh
