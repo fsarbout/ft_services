@@ -1,3 +1,37 @@
-FROM alpine:3.12
+FROM alpine:3.11
 
-RUN apk update && apk add nginx && apk -U add vim && apk add openrc --no-cache && apk add openssl && apk add openssh
+#nginx package
+
+RUN apk update
+RUN apk add nginx openrc vim
+
+#new user and group for nginx
+# adduser : create a new user or update default new user information
+# -D : changing default values
+# -g : group name or ID , sets the group variable in etc/default/useradd
+
+RUN adduser -D -g 'www' www
+
+#create directory for html files
+#chown : change owner (user and group ) vs (chmod changes how the U/G can access the file)
+# -R : recursive > for all files and subdirectories within a specified directory
+
+RUN mkdir /www
+RUN chown -R www:www /var/lib/nginx
+RUN chown -R www:www /www
+
+# nginx configuration
+RUN mkdir -p /run/nginx
+RUN mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+
+COPY ./src/nginx.conf /etc/nginx/
+COPY ./src/index.html /www/index.html
+COPY ./src/start.sh /
+
+
+RUN chmod +x start.sh
+
+
+EXPOSE 80
+
+CMD ["sh", "start.sh"]
