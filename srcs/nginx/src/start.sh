@@ -3,4 +3,7 @@ openrc
 rc-status
 
 touch /run/openrc/softlevel
-nginx -g "daemon off;"
+nginx
+
+# nginx -g "daemon off;"
+tail -F /dev/null

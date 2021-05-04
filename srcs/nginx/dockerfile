@@ -23,21 +23,17 @@ RUN apk add nginx openrc vim openssl
 # nginx configuration
 RUN mkdir -p /run/nginx
 
-RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=mydomain.com" -addext "subjectAltName=DNS:mydomain.com" -newkey rsa:2048 -keyout /server.key -out /server.crt;
-
+RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=mydomain.com" -addext "subjectAltName=DNS:mydomain.com" -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt;
 
 COPY ./src/default.conf /etc/nginx/conf.d/
 
 COPY ./src/index.html /var/www/localhost/htdocs
 COPY ./src/start.sh /
 
-
 RUN chmod +x start.sh
 
-
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["sh", "start.sh"]
-
 
 # sshd daemon
