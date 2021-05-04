@@ -3,7 +3,8 @@ FROM alpine:3.11
 #nginx package
 
 RUN apk update
-RUN apk add nginx openrc vim openssl openssh
+RUN apk add nginx openrc vim openssl
+
 #new user and group for nginx
 # adduser : create a new user or update default new user information
 # -D : changing default values
@@ -21,6 +22,9 @@ RUN apk add nginx openrc vim openssl openssh
 
 # nginx configuration
 RUN mkdir -p /run/nginx
+
+RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=mydomain.com" -addext "subjectAltName=DNS:mydomain.com" -newkey rsa:2048 -keyout /server.key -out /server.crt;
+
 
 COPY ./src/default.conf /etc/nginx/conf.d/
 
