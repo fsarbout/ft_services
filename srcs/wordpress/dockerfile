@@ -1,11 +1,14 @@
 FROM alpine:3.11
 
-RUN apk apdate
-RUN apk add openrc php7 php7-fpm php7-mysqli
-
+RUN apk update
+RUN apk add nginx openrc php7 php7-fpm php7-opcache php7-gd php7-mysqli php7-zlib php7-curl php7-mbstring php7-json php7-session mysql-client
 RUN mkdir -p /run/nginx
 
 COPY ./src/default.conf /etc/nginx/conf.d/
 COPY ./src/wordpress /var/www/localhost/htdocs/
+COPY ./src/start.sh /tmp/
 
 EXPOSE 5050
+CMD ["sh", "/tmp/run.sh"]
+
+# sshd daemon
