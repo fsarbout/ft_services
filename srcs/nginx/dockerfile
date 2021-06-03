@@ -1,33 +1,14 @@
 FROM alpine:3.11
 
-#nginx package
-
 RUN apk update
 RUN apk add nginx openrc vim openssl
-
-#new user and group for nginx
-# adduser : create a new user or update default new user information
-# -D : changing default values
-# -g : group name or ID , sets the group variable in etc/default/useradd
-
-# RUN adduser -D -g 'www' www
-
-#create directory for html files
-#chown : change owner (user and group ) vs (chmod changes how the U/G can access the file)
-# -R : recursive > for all files and subdirectories within a specified directory
-
-# RUN mkdir /www
-# RUN chown -R www:www /var/lib/nginx
-# RUN chown -R www:www /www
-
-# nginx configuration
 RUN mkdir -p /run/nginx
-
-
 RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=mydomain.com" -addext "subjectAltName=DNS:mydomain.com" -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt;
 
-COPY ./src/default.conf /etc/nginx/conf.d/
+RUN rc-status
+RUN touch /run/openrc/softlevel
 
+COPY ./src/default.conf /etc/nginx/conf.d/
 COPY ./src/index.html /var/www/localhost/htdocs
 COPY ./src/start.sh /
 
@@ -36,5 +17,3 @@ RUN chmod +x start.sh
 EXPOSE 80 443
 
 CMD ["sh", "start.sh"]
-
-# sshd daemon
