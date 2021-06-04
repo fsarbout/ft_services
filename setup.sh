@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 #
 delete minikube
 

@@ -12,7 +12,7 @@ COPY ./src/default.conf /etc/nginx/conf.d/
 COPY ./src/index.html /var/www/localhost/htdocs
 COPY ./src/start.sh /
 
-RUN chmod +x start.sh
+RUN chmod 777 start.sh
 
 EXPOSE 80 443
 
