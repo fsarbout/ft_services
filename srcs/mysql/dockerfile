@@ -9,7 +9,8 @@ RUN touch /run/openrc/softlevel
 RUN /etc/init.d/mariadb setup
 
 
-COPY ./src/start.sh ./src/my_db.sql /
+COPY ./src/start.sh /
+COPY ./src/my_db.sql /
 COPY ./src/mariadb-server.cnf /etc/my.cnf.d/
 
 RUN chmod +x start.sh

@@ -4,7 +4,7 @@
 #kubectl delete svc --all
 #kubectl delete pvc --all
 
- minikube delete
+minikube delete
 
 #start a cluster using the virtualbox driver
  minikube start --driver=virtualbox
@@ -35,3 +35,7 @@ kubectl apply -f ./srcs/wordpress/wordpress.yaml
 # kubectl apply -f ./srcs/influxDB/influxDB.yaml
 
 minikube dashboard &
+
+# kubectl delete -f ./srcs/mysql/mysql.yaml && docker rmi my_mysql-img && docker build -t my_mysql-img && kubectl apply -f ./srcs/mysql/mysql.yaml
+# kubectl delete -f ./srcs/nginx/nginx.yaml && docker rmi my_nginx-img && docker build -t my_nginx-img && kubectl apply -f ./srcs/nginx/nginx.yaml
+# kubectl delete -f ./srcs/wordpress/wordpress.yaml && docker rmi my_wordpress-img && docker build -t my_wordpress-img && kubectl apply -f ./srcs/wordpress/wordpress.yaml
