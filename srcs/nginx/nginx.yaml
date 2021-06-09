@@ -1,0 +1,50 @@
+#Deployment : tool to manage how pods gonna workd (replica , ports ...)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: my_nginx
+#spec field specifies exactly what I want k8s to build  
+spec:
+  #selector > I want from dplymnt to search for all pods with the label app : my_nginx
+  selector:
+    matchLabels:
+      app: my_nginx
+  template:
+    metadata:
+      labels:
+        app: my_nginx
+    spec:
+      containers:
+      - image: my_nginx-img
+        name: nginx
+        imagePullPolicy: Never
+        #assign/create  ports
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+---
+  #service : instead of contacting each pod with its own ip address we use service to communicate with a single ip address
+  #by using metallb
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+  name: nginx-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: my_nginx
+    #access ports  , the port of service entry point , which in my case gonna ge the same as the pods by default ,
+    #because I don't assign the ports in targetPort
+  ports:
+      #name is optional , but if you have more than port then you must name each one
+    - name: http
+      protocol: TCP
+      #service port
+      port: 80
+    - name: https
+      protocol: TCP
+      port: 443
