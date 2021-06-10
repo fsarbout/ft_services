@@ -9,6 +9,8 @@ COPY ./src/phpmyadmin/ /var/www/phpmyadmin
 COPY ./src/default.conf /etc/nginx/conf.d
 
 COPY ./src/start.sh  /
+COPY ./src/config.inc.php /var/www/phpmyadmin/config.inc.php
+
 
 RUN rc-status
 RUN touch /run/openrc/softlevel

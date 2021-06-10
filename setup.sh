@@ -7,7 +7,7 @@
 minikube delete
 
 #start a cluster using the virtualbox driver
- minikube start --driver=virtualbox
+ minikube start --driver=virtualbox --memory=4096
 
 eval $(minikube docker-env)
 
