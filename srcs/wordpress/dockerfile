@@ -10,8 +10,10 @@ RUN mkdir -p /run/nginx
 
 COPY ./src/default.conf /etc/nginx/conf.d/
 COPY ./src/wordpress /var/www/wordpress
-
 COPY ./src/start.sh /
+
+RUN apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+COPY ./src/telegraf.conf /etc
 
 RUN chmod +x start.sh
 

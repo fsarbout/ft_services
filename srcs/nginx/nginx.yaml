@@ -4,26 +4,33 @@ kind: Deployment
 metadata:
   name: nginx
   labels:
-    app: my_nginx
+    app: nginx
 #spec field specifies exactly what I want k8s to build  
 spec:
-  #selector > I want from dplymnt to search for all pods with the label app : my_nginx
+  #selector > I want from dplymnt to search for all pods with the label app : nginx
   selector:
     matchLabels:
-      app: my_nginx
+      app: nginx
   template:
     metadata:
       labels:
-        app: my_nginx
+        app: nginx
     spec:
       containers:
-      - image: my_nginx-img
+      - image: nginx
         name: nginx
         imagePullPolicy: Never
         #assign/create  ports
         ports:
         - containerPort: 80
         - containerPort: 443
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #     - bash
+        #     - /health.sh
+        #   initialDelaySeconds: 35
+        #   periodSeconds: 5
 ---
   #service : instead of contacting each pod with its own ip address we use service to communicate with a single ip address
   #by using metallb
@@ -32,11 +39,11 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
-  name: nginx-service
+  name: nginx
 spec:
   type: LoadBalancer
   selector:
-    app: my_nginx
+    app: nginx
     #access ports  , the port of service entry point , which in my case gonna ge the same as the pods by default ,
     #because I don't assign the ports in targetPort
   ports:

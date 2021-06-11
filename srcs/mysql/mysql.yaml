@@ -5,18 +5,25 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: my_mysql
+      app: mysql
   template:
     metadata:
       labels:
-        app: my_mysql
+        app: mysql
     spec:
       containers:
       - name: mysql
-        image: my_mysql-img
+        image: mysql
         imagePullPolicy: Never
         ports:
         - containerPort: 3306
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - liveness.sh
+          initialDelaySeconds: 35
+          periodSeconds: 5
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -39,9 +46,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service
+  name: mysql
 spec:
   selector:
-    app: my_mysql
+    app: mysql
   ports:
     - port: 3306
