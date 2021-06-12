@@ -11,11 +11,11 @@ COPY ./src/default.conf /etc/nginx/conf.d
 COPY ./src/start.sh  /
 COPY ./src/config.inc.php /var/www/phpmyadmin/config.inc.php
 
-RUN apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
-COPY ./src/telegraf.conf /etc
-
 RUN rc-status
 RUN touch /run/openrc/softlevel
+
+RUN apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+COPY ./src/telegraf.conf /etc
 
 EXPOSE 5000
 

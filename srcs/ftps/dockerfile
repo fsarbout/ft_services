@@ -1,0 +1,40 @@
+FROM alpine:3.11
+
+RUN apk update
+RUN apk upgrade
+RUN apk add openrc openssl vsftpd libc6-compat
+
+RUN mkdir -p /etc/ssl/private
+RUN mkdir -p /etc/ssl/certs
+
+RUN adduser -D admin -G root && echo "admin:admin" | chpasswd
+RUN chown -R admin:root /etc/vsftpd
+RUN yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
+COPY ./src/vsftpd.conf /etc/vsftpd/vsftpd.conf
+
+RUN apk add telegraf --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+COPY ./src/telegraf.conf /etc
+
+COPY ./src/start.sh /
+# COPY ./src/liveness.sh /
+
+RUN chmod 777 /start.sh
+
+#20000 to 20001 to be used in passive mode
+#20 for ftp data 
+#21 for ftp commands
+
+EXPOSE 20 21 20000 20001
+
+CMD ["sh", "start.sh"]
+
+
+# you want to use certificates to authenticate connections,
+# for secure file transfer
+#Transport Layer Security (TLS) is an update to the SSL protocol.
+#more secure encryption. In 1999, TLS 1.0 was released as an update to SSL 3.0
+#TLS replaced SSL 
+# encrypt server connections when trasferring data
+#x.509 for certificates >> include identifiale information , users data , key details ....
+#FTPS uses multiple port numbers
+#a new port opens each time a file transfer or directory listing request is made 
