@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# telegraf="$(ps | pgrep "telegraf")"
+telegraf="$(ps | pgrep "telegraf")"
 influxd="$(ps | pgrep "influxd")"
 
-# if [ -z "$telegraf" ]; then
-#     exit 1
+if [ -z "$telegraf" ]; then
+    exit 1
 elif [ -z "$influxd" ]; then
     exit 1
 else

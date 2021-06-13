@@ -14,6 +14,7 @@ COPY ./src/telegraf.conf /etc
 COPY ./src/default.conf /etc/nginx/conf.d/
 COPY ./src/wordpress /var/www/wordpress
 COPY ./src/start.sh /
+COPY ./src/liveness.sh /
 
 
 RUN chmod +x start.sh

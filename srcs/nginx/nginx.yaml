@@ -24,13 +24,13 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
-        # livenessProbe:
-        #   exec:
-        #     command:
-        #     - bash
-        #     - /health.sh
-        #   initialDelaySeconds: 35
-        #   periodSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - liveness.sh
+          initialDelaySeconds: 35
+          periodSeconds: 5
 ---
   #service : instead of contacting each pod with its own ip address we use service to communicate with a single ip address
   #by using metallb
