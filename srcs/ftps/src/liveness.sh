@@ -1,5 +1,4 @@
 #!/bin/sh
-
 telegraf="$(ps | pgrep "telegraf")"
 vsftpd="$(ps | pgrep "vsftpd")"
 

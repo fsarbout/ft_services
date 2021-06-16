@@ -1,5 +1,4 @@
 #!/bin/sh
-
 telegraf="$(ps | pgrep "telegraf")"
 grafana="$(ps | pgrep "grafana")"
 
